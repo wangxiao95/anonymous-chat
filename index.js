@@ -82,7 +82,7 @@ function match(user) {
     _.each(allSockets, item => {
       if (!item.targetUser && item.id !== user.id) {
         matchUser = item
-        return
+        return false
       }
     })
     if (matchUser) {
