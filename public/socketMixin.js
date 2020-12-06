@@ -1,0 +1,138 @@
+var targetUser = null
+var $messageBox = null
+var messageId = null
+var socket = io()
+var userId = null
+
+var socketMixin = {
+  methods: {
+    init() {
+      $messageBox = $('#messageBox')
+      userId = this.getUserId()
+
+      socket.on('connect', () => {
+
+        socket.emit('init', userId)
+
+        socket.on('relation', user => {
+          // console.log('relation', user)
+          targetUser = user
+          $messageBox.html('')
+
+          var targetUserName = this.getUserName(targetUser.id)
+          var toast = `<li class="toast">
+            <div class="toast-inner">恭喜您匹配到：${targetUserName}</div>
+          </li>`
+          this.addMsg(toast)
+          this.state = 'done'
+        })
+
+        socket.on('moment-leave', () => {
+          // this.disconnect()
+          var targetUserName = this.getUserName(targetUser.id)
+          var toast = `<li class="toast">
+            <div class="toast-inner">${targetUserName} 有可能去厕所了, 您可以选择等他一会儿</div>
+          </li>`
+          this.addMsg(toast)
+        })
+
+        socket.on('leave', () => {
+          var targetUserName = this.getUserName(targetUser.id)
+          var toast = `<li class="toast">
+            <div class="toast-inner">${targetUserName} 离开了</div>
+          </li>`
+          this.addMsg(toast)
+          this.disconnect()
+        })
+
+
+        socket.on('chat', (msg) => {
+          if (messageId === msg.messageId) {
+            return
+          }
+          messageId = msg.messageId
+          var message = `<li class="message-item">
+            <div>
+              <div class="user">
+                <div class="user-avatar">
+                  <img src="./avatar.jpg" alt="">
+                </div>
+                <div class="message">${msg.text}</div>
+              </div>
+            </div>
+          </li>`
+          this.addMsg(message)
+        })
+
+        $(document).on('keyup', '#input', e => {
+          if (e.keyCode === 13) {
+            this.sendText()
+          }
+        })
+
+        $(document).on('click', '#send', this.sendText)
+      })
+    },
+    disconnect() {
+      targetUser = null
+      this.state = 'waiting'
+    },
+    sendText() {
+      if (!targetUser) {
+        alert('还没有匹配到好友哦，请耐心等待')
+        // this.$alert('还没有匹配到好友哦，请耐心等待', '提示', {
+        //   confirmButtonText: '确定',
+        //   callback: action => {
+        //     this.$message({
+        //       type: 'info',
+        //       message: `action: ${action}`,
+        //     })
+        //   },
+        // })
+        return
+      }
+      var val = $('#input').val()
+      if (!val) {
+        return
+      }
+      socket.emit('chat', targetUser.socketId, {
+        text: val,
+        messageId: new Date().getTime(),
+      })
+      var message = `<li class="message-item is-me">
+        <div>
+          <div class="user">
+            <div class="message">${val}</div>
+            <div class="user-avatar">
+              <img src="./me.jpg" alt="">
+            </div>
+          </div>
+        </div>
+      </li>`
+      this.addMsg(message)
+      $('#input').val('')
+    },
+    getUserName(userId) {
+      return userId.slice(0, -13)
+    },
+    addMsg(node) {
+      $messageBox.append(node).children(':last').hide().fadeIn()
+      this.scroll2Bottom()
+    },
+    scroll2Bottom() {
+      const messageBox = $('#messageBox')[0]
+      messageBox.scrollTo(0, messageBox.scrollHeight)
+    },
+    getUserId() {
+      var userId = localStorage.getItem('user')
+      if (!userId) {
+        var userName = prompt('输入昵称')
+        var newUser = userName + '' + new Date().getTime()
+        localStorage.setItem('user', newUser)
+        return newUser
+      }
+      return userId
+    }
+    ,
+  },
+}
