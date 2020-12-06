@@ -74,7 +74,6 @@ body {
 .message {
   display: inline-block;
   /*align-items: center;*/
-  /*justify-content: flex-start;*/
   max-width: 2.5rem;
   line-height: 1.7;
   /*margin-left: .16rem;*/
