@@ -81,6 +81,9 @@ var $vm = new Vue({
     },
     editNickName() {
       var userName = prompt('输入昵称')
+      if (!userName) {
+        return
+      }
       var newUser = userName + '' + new Date().getTime()
       localStorage.setItem('user', newUser)
       socket.emit('delete')
