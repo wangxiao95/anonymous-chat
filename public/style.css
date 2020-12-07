@@ -232,3 +232,11 @@ body {
   border-color: #5c92fc !important;
   background-color: #eff5fb !important;
 }
+
+.loading-text {
+  position: relative;
+  z-index: 2001;
+  left: 25%;
+  top: .3rem;
+  color: #3d7eff;
+}

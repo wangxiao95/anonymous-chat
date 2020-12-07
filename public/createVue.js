@@ -8,6 +8,7 @@ var $vm = new Vue({
         <span class="leave" @click="leave"><span v-show="!showMatch && !loading">离开</span></span>
       </div>
       <div class="body" v-loading="loading">
+        <div v-if="loading" class="loading-text">长时间匹配不到？刷新试试~</div>
         <div v-if="this.state === 'waiting'" class="edit-name">
             <el-button type="primary" plain @click="editNickName">修改昵称</el-button>
         </div>
