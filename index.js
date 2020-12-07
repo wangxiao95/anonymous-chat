@@ -70,7 +70,6 @@ function bindEvent(user) {
   socket.off('leave', leaveEventCallBack).on('leave', leaveEventCallBack)
   socket.off('match', matchEventCallBack).on('match', matchEventCallBack)
   socket.on('del', flag => {
-    console.log(11, flag)
     if (!flag) return
     _.remove(pendingUsers, item => item.id === user.id)
   })
