@@ -188,6 +188,16 @@ body {
   /*color: #aa6c00;*/
   /*background: #fff4e0;*/
 }
+.toast.is-warn {
+  width: 100%;
+}
+.toast.is-warn .toast-inner {
+  width: 80%;
+  color: #aa6c00;
+  text-align: center;
+  margin: .1rem auto;
+  background: #fff4e0;
+}
 .toast-inner {
   display: inline-block;
   max-width: 80%;
@@ -209,4 +219,16 @@ body {
   flex: 1;
   font-size: .15rem;
   text-align: center;
+}
+
+.edit-name {
+  width: 100%;
+  text-align: center;
+  margin: .3rem auto;
+}
+
+.edit-name button {
+  color: #5c92fc !important;
+  border-color: #5c92fc !important;
+  background-color: #eff5fb !important;
 }

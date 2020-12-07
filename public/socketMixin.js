@@ -3,6 +3,8 @@ var $messageBox = null
 var messageId = null
 var socket = io()
 var userId = null
+var momentId = null
+var backId = null
 
 var socketMixin = {
   methods: {
@@ -17,21 +19,41 @@ var socketMixin = {
         socket.on('relation', user => {
           // console.log('relation', user)
           targetUser = user
-          $messageBox.html('')
+          // $messageBox.html('')
 
           var targetUserName = this.getUserName(targetUser.id)
           var toast = `<li class="toast">
             <div class="toast-inner">恭喜您匹配到：${targetUserName}</div>
           </li>`
+          var toastWarn = `<li class="toast is-warn">
+            <div class="toast-inner">以下是和 ${targetUserName} 的聊天</div>
+          </li>`
           this.addMsg(toast)
+          this.addMsg(toastWarn)
           this.state = 'done'
         })
 
-        socket.on('moment-leave', () => {
+        socket.on('moment-leave', (time) => {
+          if (momentId === time) {
+            return
+          }
+          momentId = time
           // this.disconnect()
           var targetUserName = this.getUserName(targetUser.id)
           var toast = `<li class="toast">
             <div class="toast-inner">${targetUserName} 有可能去厕所了, 您可以选择等他一会儿</div>
+          </li>`
+          this.addMsg(toast)
+        })
+
+        socket.on('back', (time) => {
+          if (backId === time) {
+            return
+          }
+          backId = time
+          var targetUserName = this.getUserName(targetUser.id)
+          var toast = `<li class="toast">
+            <div class="toast-inner">${targetUserName} 回来了</div>
           </li>`
           this.addMsg(toast)
         })

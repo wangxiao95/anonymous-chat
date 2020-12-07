@@ -8,30 +8,33 @@ var $vm = new Vue({
         <span class="leave" @click="leave"><span v-show="!showMatch && !loading">离开</span></span>
       </div>
       <div class="body" v-loading="loading">
+        <div v-if="this.state === 'waiting'" class="edit-name">
+            <el-button type="primary" plain @click="editNickName">修改昵称</el-button>
+        </div>
         <ul id="messageBox">
-          <li class="message-item">
-            <div>
-              <div class="user">
-                <div class="user-avatar">
-                  <img src="./avatar.jpg" alt="">
-                </div>
-                <div class="user-name">王晓</div>
-              </div>
-              <div class="message">测试消息</div>
-            </div>
-          </li>
-          <li class="message-item is-me">
-            <div>
-              <div class="user">
-                <div class="user-name">王晓</div>
+<!--          <li class="message-item">-->
+<!--            <div>-->
+<!--              <div class="user">-->
+<!--                <div class="user-avatar">-->
+<!--                  <img src="./avatar.jpg" alt="">-->
+<!--                </div>-->
+<!--                <div class="user-name">王晓</div>-->
+<!--              </div>-->
+<!--              <div class="message">测试消息</div>-->
+<!--            </div>-->
+<!--          </li>-->
+<!--          <li class="message-item is-me">-->
+<!--            <div>-->
+<!--              <div class="user">-->
+<!--                <div class="user-name">王晓</div>-->
 
-                <div class="user-avatar">
-                  <img src="./me.jpg" alt="">
-                </div>
-              </div>
-              <div class="message">测试消息</div>
-            </div>
-          </li>
+<!--                <div class="user-avatar">-->
+<!--                  <img src="./me.jpg" alt="">-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <div class="message">测试消息</div>-->
+<!--            </div>-->
+<!--          </li>-->
         </ul>
       </div>
       <div class="footer">
@@ -74,6 +77,13 @@ var $vm = new Vue({
     leave() {
       socket.emit('leave')
       this.state = 'waiting'
-    }
+    },
+    editNickName() {
+      var userName = prompt('输入昵称')
+      var newUser = userName + '' + new Date().getTime()
+      localStorage.setItem('user', newUser)
+      socket.emit('delete')
+      location.reload()
+    },
   }
 })
