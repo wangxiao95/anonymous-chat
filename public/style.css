@@ -234,9 +234,9 @@ body {
 }
 
 .loading-text {
-  position: relative;
+  position: fixed;
   z-index: 2001;
   left: 25%;
-  top: .3rem;
+  top: 1rem;
   color: #3d7eff;
 }

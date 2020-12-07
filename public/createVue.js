@@ -86,7 +86,7 @@ var $vm = new Vue({
       }
       var newUser = userName + '' + new Date().getTime()
       localStorage.setItem('user', newUser)
-      socket.emit('delete')
+      socket.emit('del', true)
       location.reload()
     },
   }

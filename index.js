@@ -58,14 +58,22 @@ function bindEvent(user) {
   const matchEventCallBack = () => {
     match(user)
   }
-  const deleteEventCallBack = () => {
-    _.remove(pendingUsers, item => item.id === user.id)
-  }
+  // const deleteEventCallBack = (flag) => {
+  //   console.log(111, flag)
+  //   if (!flag) {
+  //     return false
+  //   }
+  //   _.remove(pendingUsers, item => item.id === user.id)
+  // }
   socket.off('chat', chatEventCallBack).on('chat', chatEventCallBack)
   socket.off('disconnect', momentLeaveEventCallBack).on('disconnect', momentLeaveEventCallBack)
   socket.off('leave', leaveEventCallBack).on('leave', leaveEventCallBack)
   socket.off('match', matchEventCallBack).on('match', matchEventCallBack)
-  socket.off('delete', deleteEventCallBack).on('match', deleteEventCallBack)
+  socket.on('del', flag => {
+    console.log(11, flag)
+    if (!flag) return
+    _.remove(pendingUsers, item => item.id === user.id)
+  })
   console.log(socket.eventNames())
 }
 
@@ -92,7 +100,9 @@ function match(user) {
     bindEvent(targetUser)
     return
   }
+  console.log(_.map(pendingUsers, item => _.pick(item, ['id'])))
   const matchUser = _.findLast(pendingUsers, item => item.id !== user.id && item.state === 'pending')
+  console.log('matchUser', matchUser && matchUser.id)
   if (matchUser) {
     matchUser.targetUser = user.id
     matchUser.targetSocket = user.socket.id
@@ -109,8 +119,8 @@ function match(user) {
     _.remove(pendingUsers, item => item.id === user.id)
     user.state = 'pending'
     pendingUsers.unshift(user)
+    console.log(_.map(pendingUsers, item => _.omit(item, ['socket'])))
   }
-  console.log(_.map(pendingUsers, item => _.omit(item, ['socket'])))
 
 
   // user.state = 'pending'
