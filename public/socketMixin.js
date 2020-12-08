@@ -147,14 +147,22 @@ var socketMixin = {
     },
     getUserId() {
       var userId = localStorage.getItem('user')
-      if (!userId) {
-        var userName = prompt('输入昵称')
+
+      if (!userId || !userId.slice(0, -13)) {
+        var userName = this.writeNickName()
+        // var userName = prompt('输入昵称')
         var newUser = userName + '' + new Date().getTime()
         localStorage.setItem('user', newUser)
         return newUser
       }
       return userId
-    }
-    ,
+    },
+    writeNickName() {
+      var userName = prompt('输入昵称')
+      if (userName) {
+        return userName
+      }
+      return this.writeNickName()
+    },
   },
 }
