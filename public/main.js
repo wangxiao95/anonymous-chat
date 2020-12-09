@@ -39,7 +39,7 @@ function init(vm) {
         <div>
           <div class="user">
             <div class="user-avatar">
-              <img src="./avatar.jpg" alt="">
+              <img src="images/avatar.jpg" alt="">
             </div>
             <div class="user-name">${getUserName(targetUser.id)}</div>
           </div>
@@ -85,7 +85,7 @@ function init(vm) {
             <div class="user-name">${getUserName(userId)}</div>
 
             <div class="user-avatar">
-              <img src="./me.jpg" alt="">
+              <img src="images/me.jpg" alt="">
             </div>
           </div>
           <div class="message">${val}</div>

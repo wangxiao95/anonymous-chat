@@ -137,7 +137,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: .10rem .18rem;
+  padding: .10rem 0;
   background: #3d7eff;
 }
 
@@ -154,9 +154,20 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20vw;
+  width: .6rem;
   height: .40rem;
   color: #ffffff;
+  padding-right: .1rem;
+}
+.footer .send-emoji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: .5rem;
+  height: .4rem;
+}
+.footer .send-emoji img {
+  height: 80%;
 }
 
 #messageBox {
@@ -222,6 +233,8 @@ body {
 }
 
 .edit-name {
+  position: fixed;
+  top: .8rem;
   width: 100%;
   text-align: center;
   margin: .3rem auto;
@@ -239,4 +252,19 @@ body {
   left: 25%;
   top: 1rem;
   color: #3d7eff;
+}
+
+.emoji {
+  height: 1.64rem;
+  padding-bottom: .12rem;
+  overflow-y: auto;
+}
+.emoji-item {
+  width: .26rem;
+  margin: .12rem .12rem 0;
+}
+.emoji-msg {
+  height: .2rem;
+  vertical-align: middle;
+  margin: auto .02rem;
 }

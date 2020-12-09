@@ -73,13 +73,14 @@ var socketMixin = {
             return
           }
           messageId = msg.messageId
+          var text = this.getHasEmojiNode(msg.text)
           var message = `<li class="message-item">
             <div>
               <div class="user">
                 <div class="user-avatar">
-                  <img src="./avatar.jpg" alt="">
+                  <img src="images/avatar.jpg" alt="">
                 </div>
-                <div class="message">${msg.text}</div>
+                <div class="message">${text}</div>
               </div>
             </div>
           </li>`
@@ -113,7 +114,7 @@ var socketMixin = {
         // })
         return
       }
-      var val = $('#input').val()
+      var val = this.inputMsg
       if (!val) {
         return
       }
@@ -121,18 +122,20 @@ var socketMixin = {
         text: val,
         messageId: new Date().getTime(),
       })
+      var text = this.getHasEmojiText(val)
       var message = `<li class="message-item is-me">
         <div>
           <div class="user">
-            <div class="message">${val}</div>
+            <div class="message">${text}</div>
             <div class="user-avatar">
-              <img src="./me.jpg" alt="">
+              <img src="images/me.jpg" alt="">
             </div>
           </div>
         </div>
       </li>`
       this.addMsg(message)
-      $('#input').val('')
+      // $('#input').val('')
+      this.inputMsg = ''
     },
     getUserName(userId) {
       return userId.slice(0, -13)
@@ -164,5 +167,8 @@ var socketMixin = {
       }
       return this.writeNickName()
     },
+    getHasEmojiText(text) {
+      return text.replace(/\[\S+?\]/g, '<img class="emoji-msg" src="./emojis/$&.png" />')
+    }
   },
 }

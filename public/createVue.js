@@ -7,7 +7,7 @@ var $vm = new Vue({
         <span id="targetName">{{this.targetName}}</span>
         <span class="leave" @click="leave"><span v-show="!showMatch && !loading">离开</span></span>
       </div>
-      <div class="body" v-loading="loading">
+      <div class="body" :style="bodyStyle" v-loading="loading" @click="emojiVisible = false">
         <div v-if="loading" class="loading-text">长时间匹配不到？刷新试试~</div>
         <div v-if="this.state === 'waiting'" class="edit-name">
             <el-button type="primary" plain @click="editNickName">修改昵称</el-button>
@@ -39,14 +39,23 @@ var $vm = new Vue({
         </ul>
       </div>
       <div class="footer">
-        <input type="text" id="input" :disabled="this.state !== 'done'" placeholder="enter发送">
+        <div class="send-emoji" @click="showEmoji"><img src="./images/emoji.png" alt=""></div>
+        <input type="text" id="input" :disabled="this.state !== 'done'" placeholder="enter发送" v-model="inputMsg">
         <div id="send">发送</div>
+      </div>
+      <div class="emoji" v-if="emojiVisible">
+        <div class="emoji-inner">
+          <img @click="addEmoji(emoji)" class="emoji-item" v-for="(emoji, i) in emojis" :key="i" :src="emojiSrc(emoji)"/>
+        </div>
       </div>
     </div>
     `,
   data() {
     return {
-      state: 'pending',
+      state: 'waiting',
+      emojis: emojis,
+      emojiVisible: false,
+      inputMsg: '',
     }
   },
   computed: {
@@ -65,12 +74,26 @@ var $vm = new Vue({
     },
     loading() {
       return this.state === 'pending'
-    }
+    },
+    bodyStyle() {
+      return {
+        height: this.emojiVisible ? 'calc(100vh - 2.64rem)' : 'calc(100vh - 1rem)',
+      }
+    },
   },
   mounted() {
     this.init()
   },
   methods: {
+    emojiSrc(emoji) {
+      return `./emojis/${emoji}.png`
+    },
+    showEmoji() {
+      this.emojiVisible = !this.emojiVisible
+    },
+    addEmoji(emoji) {
+      this.inputMsg += emoji
+    },
     match() {
       socket.emit('match')
       this.state = 'pending'
