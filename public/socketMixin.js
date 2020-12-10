@@ -73,7 +73,7 @@ var socketMixin = {
             return
           }
           messageId = msg.messageId
-          var text = this.getHasEmojiNode(msg.text)
+          var text = this.getHasEmojiText(msg.text)
           var message = `<li class="message-item">
             <div>
               <div class="user">
