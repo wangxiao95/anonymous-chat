@@ -3,7 +3,7 @@ var $vm = new Vue({
   mixins: [socketMixin],
   data() {
     return {
-      state: 'waiting',
+      state: 'pending',
       emojis: emojis,
       emojiVisible: false,
       inputMsg: '',
