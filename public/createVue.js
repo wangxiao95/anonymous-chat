@@ -52,7 +52,7 @@ var $vm = new Vue({
     `,
   data() {
     return {
-      state: 'waiting',
+      state: 'pending',
       emojis: emojis,
       emojiVisible: false,
       inputMsg: '',
